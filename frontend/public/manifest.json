@@ -1,0 +1,13 @@
+{
+  "name": "Public Health LMS — School of Public Health",
+  "short_name": "PH LMS",
+  "description": "Learning Management System for the School of Public Health, SRMIST.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f5f8fa",
+  "theme_color": "#0b4f6c",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
