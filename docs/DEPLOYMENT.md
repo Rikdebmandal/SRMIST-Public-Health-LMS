@@ -39,6 +39,14 @@ Copy `.env.example` to `.env` and fill it in. Nothing sensitive is committed.
 
 ---
 
+## Hosting the frontend on Vercel
+
+Vercel is serverless and cannot run the Celery worker, keep uploaded files, or
+hold database connections. Put the Next.js app there and the Django API on a
+platform with persistent processes. Step-by-step instructions, including the
+cross-site cookie configuration that setup requires, are in
+[VERCEL.md](VERCEL.md).
+
 ## Docker Compose
 
 The fastest path to a running stack:
