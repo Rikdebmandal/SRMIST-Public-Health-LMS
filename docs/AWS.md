@@ -23,6 +23,25 @@ recommendation, not a compromise.
 
 ---
 
+## Fastest route: the bootstrap script
+
+Once you have an Ubuntu instance running and can open its terminal, this does
+every step below in one paste — Docker, swap, clone, secrets, public IP
+detection, start, seed:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Rikdebmandal/SRMIST-Public-Health-LMS/main/scripts/aws-bootstrap.sh | bash
+```
+
+It brings the stack up on **port 80 over plain HTTP**, reachable at the
+instance's public IP, so you need no domain to see it working. Add a domain and
+TLS afterwards using the certificate steps further down.
+
+The manual walkthrough below explains what the script is doing, and is what you
+want if a step fails.
+
+---
+
 ## Path 1 — Lightsail (recommended)
 
 ### 1. Create the instance
