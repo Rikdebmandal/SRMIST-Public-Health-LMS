@@ -146,6 +146,7 @@ public-health-lms/
 | [SECURITY.md](docs/SECURITY.md) | Threat model, controls, privacy posture |
 | [DEPLOYMENT.md](docs/DEPLOYMENT.md) | Environment variables, production deployment, backups |
 | [VERCEL.md](docs/VERCEL.md) | Deploying the frontend to Vercel with the API elsewhere |
+| [AWS.md](docs/AWS.md) | Deploying the whole stack to AWS (Lightsail, EC2+RDS, ECS) |
 | [TESTING.md](docs/TESTING.md) | Test strategy, how to run, what is covered |
 | [CONTRIBUTING.md](docs/CONTRIBUTING.md) | Conventions for extending the platform |
 

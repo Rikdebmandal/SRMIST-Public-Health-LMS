@@ -1,0 +1,64 @@
+# Production overlay. Use alongside the base file:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# It puts nginx in front of everything and stops the app containers from
+# publishing ports of their own, so the only things reachable from the internet
+# are 80 and 443.
+
+services:
+  backend:
+    # Reachable only on the internal Docker network, via nginx.
+    ports: !override []
+    restart: unless-stopped
+    environment:
+      DJANGO_DEBUG: "false"
+      SECURE_SSL_REDIRECT: "true"
+
+  frontend:
+    ports: !override []
+    restart: unless-stopped
+
+  db:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+
+  worker:
+    restart: unless-stopped
+
+  beat:
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+      - static_data:/srv/static:ro
+      - media_data:/srv/media:ro
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+
+  # Renews the certificate every 12 hours; a no-op until one is due.
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: >
+      sh -c "trap exit TERM;
+             while :; do certbot renew --webroot -w /var/www/certbot --quiet;
+             sleep 12h & wait $${!}; done"
+    restart: unless-stopped
+
+volumes:
+  certbot_conf:
+  certbot_www:

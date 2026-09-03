@@ -47,6 +47,12 @@ platform with persistent processes. Step-by-step instructions, including the
 cross-site cookie configuration that setup requires, are in
 [VERCEL.md](VERCEL.md).
 
+## Hosting on AWS
+
+AWS can run the whole stack, Celery included. The single-VM Lightsail path uses
+the compose files directly and is the recommended starting point — see
+[AWS.md](AWS.md).
+
 ## Docker Compose
 
 The fastest path to a running stack:
@@ -72,6 +78,14 @@ Migrations run automatically on backend start. Seed the demo dataset once:
 
 ```bash
 docker compose exec backend python manage.py seed_demo --reset
+```
+
+For a public host, add the production overlay. It puts nginx with TLS in front
+and stops the app containers publishing ports of their own, so only 80 and 443
+are reachable:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 ```
 
 Create a real administrator instead, for a genuine deployment:
