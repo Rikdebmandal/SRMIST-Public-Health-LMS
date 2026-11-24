@@ -64,6 +64,12 @@ call_command("migrate",interactive=False,verbosity=0)
 from apps.core.management.commands import seed_demo
 # The public classroom has no account routes. Give each fictional account an unusable password.
 seed_demo.DEMO_PASSWORD = None
-with open(os.devnull, "w") as quiet:
-    call_command("seed_demo", verbosity=0, stdout=quiet)
+from django.db import transaction
+with transaction.atomic():
+    fixtures = seed_demo.Command()
+    department = fixtures._department()
+    program = fixtures._program(department)
+    faculty = fixtures._staff(department)
+    catalogue = fixtures._courses(department, program)
+    fixtures._question_bank(catalogue, faculty)
 application=get_wsgi_application()
