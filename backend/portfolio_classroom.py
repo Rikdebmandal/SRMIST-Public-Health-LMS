@@ -61,5 +61,9 @@ init().catch(()=>el('about').textContent='Could not load the classroom. Reload t
 urlpatterns=[path("",lambda request:HttpResponse(PAGE)),path("classroom/courses",courses),path("classroom/questions",questions),path("classroom/grade",grade),path("classroom/attendance",attendance)]
 settings.ROOT_URLCONF=__name__
 call_command("migrate",interactive=False,verbosity=0)
-call_command("seed_demo",verbosity=0,stdout=open(os.devnull,"w"))
+from apps.core.management.commands import seed_demo
+# The public classroom has no account routes. Give each fictional account an unusable password.
+seed_demo.DEMO_PASSWORD = None
+with open(os.devnull, "w") as quiet:
+    call_command("seed_demo", verbosity=0, stdout=quiet)
 application=get_wsgi_application()
